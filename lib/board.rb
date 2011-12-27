@@ -38,6 +38,16 @@ class Board
     ]
   end
   
+  def empty_positions
+    positions = []
+    3.times do |i|
+      3.times do |j|
+        positions << [i,j] if @board[i][j] == EMPTY
+      end
+    end
+    positions
+  end
+  
   private
   
   def has_empty_position?
