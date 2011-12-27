@@ -1,12 +1,14 @@
-require File.expand_path('../board', __FILE__)
-require File.expand_path('../player', __FILE__)
+require 'board'
+require 'player'
+require 'random_player'
+require 'ai_player'
 
 class Game
   attr_reader :board, :players
 
-  def initialize
+  def initialize(player_one_klass, player_two_klass)
     @board = Board.new
-    @players = [Player.new("X", @board), Player.new("O", @board)]
+    @players = [player_one_klass.new("X", @board), player_two_klass.new("O", @board)]
   end
   
   def start

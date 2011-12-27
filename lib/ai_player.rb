@@ -1,0 +1,2 @@
+class AIPlayer < RandomPlayer
+end
