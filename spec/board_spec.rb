@@ -19,16 +19,16 @@ BOARD
 .O.
 BOARD
       board = Board.new
-      board.mark(1,2,Player.new('X',nil,nil))
-      board.mark(2,1,Player.new('O',nil,nil))
+      board.mark(1,2,Player.new('X',nil))
+      board.mark(2,1,Player.new('O',nil))
       board.draw.should == board_output.chop
     end
   end
   
   it "should return mark at board location" do
     board = Board.new
-    board.mark(1,2,Player.new('X',nil,nil))
-    board.mark(2,1,Player.new('O',nil,nil))
+    board.mark(1,2,Player.new('X',nil))
+    board.mark(2,1,Player.new('O',nil))
 
     board.get(1,2).should == 'X'
     board.get(2,1).should == 'O'

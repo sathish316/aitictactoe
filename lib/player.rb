@@ -1,9 +1,8 @@
 class Player
   attr_reader :name
   
-  def initialize(name, game, board)
+  def initialize(name, board)
     @name = name
-    @game = game
     @board = board
   end
 end
