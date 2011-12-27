@@ -3,7 +3,7 @@ class Game
 
   def initialize
     @board = Board.new
-    @player_one = Player.new
-    @player_two = Player.new
+    @player_one = Player.new("X", self, @board)
+    @player_two = Player.new("O", self, @board)
   end
 end
