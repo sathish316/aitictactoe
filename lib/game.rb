@@ -2,22 +2,20 @@ require File.expand_path('../board', __FILE__)
 require File.expand_path('../player', __FILE__)
 
 class Game
-  attr_reader :board, :player_one, :player_two
+  attr_reader :board, :players
 
   def initialize
     @board = Board.new
-    @player_one = Player.new("X", @board)
-    @player_two = Player.new("O", @board)
+    @players = [Player.new("X", @board), Player.new("O", @board)]
   end
   
   def start
+    count = 0
     begin
-      @player_one.play
-      draw
-      @player_two.play
+      @players[count%2].play
       draw
       game_over, winner = @board.game_status
-      sleep(1)
+      count += 1
     end until game_over
     puts "Winner: #{winner || 'None'}"
   end
@@ -25,8 +23,6 @@ class Game
   def draw
     system('clear')
     puts @board.draw
+    sleep(1)
   end
 end
-
-# game = Game.new
-# game.start
