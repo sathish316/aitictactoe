@@ -15,6 +15,16 @@ BOARD
     end
   end
   
+  describe "mark" do
+    it "should mark at position and return copy without modifying receiver" do
+      board = Board.new
+      marked_board = board.mark(1,2,'X')
+
+      board.get(1,2).should == '.'
+      marked_board.get(1,2).should == 'X'
+    end
+  end
+  
   describe "draw" do
     it "should draw initial board position" do
       board_output = <<-BOARD
@@ -33,16 +43,16 @@ BOARD
 .O.
 BOARD
       board = Board.new
-      board.mark(1,2,Player.new('X',nil))
-      board.mark(2,1,Player.new('O',nil))
+      board.mark!(1,2,'X')
+      board.mark!(2,1,'O')
       board.draw.should == board_output
     end
   end
   
   it "should return mark at board location" do
     board = Board.new
-    board.mark(1,2,Player.new('X',nil))
-    board.mark(2,1,Player.new('O',nil))
+    board.mark!(1,2,'X')
+    board.mark!(2,1,'O')
 
     board.get(1,2).should == 'X'
     board.get(2,1).should == 'O'
@@ -115,5 +125,78 @@ BOARD
       game_over.should be_false
       winner.should be_nil
     end
+  end
+  
+  describe "minimax value" do
+    describe "completed positions" do
+      it "should be +1 if favorable for MAX" do
+        board = Board.new(3,[
+          ['O','O','X'],
+          ['X','X','X'],
+          ['O','X','O']
+          ])
+        board.minimax('X').should == 1
+      end
+
+      it "should be 0 if favorable for neither MAX nor MIN" do
+        board = Board.new(3,[
+          ['O','O','X'],
+          ['X','X','O'],
+          ['O','X','X']
+          ])
+        board.minimax('X').should == 0
+      end
+
+      it "should be -1 if favorable for MIN" do
+        board = Board.new(3,[
+          ['O','O','X'],
+          ['O','X','X'],
+          ['O','X','O']
+          ])
+        board.minimax('X').should == -1
+      end
+    end
+    
+    describe "incomplete positions" do
+      describe "player X" do
+        it "should return max score of all possible moves at one level before complete position" do
+          board = Board.new(3,[
+            ['O','O','X'],
+            ['X','X','.'],
+            ['O','X','O']
+            ])
+          board.minimax('X').should == 1
+        end
+
+        it "should return max score of all possible moves at any level" do
+          board = Board.new(3,[
+            ['O','O','X'],
+            ['.','X','.'],
+            ['O','X','.']
+            ])
+          board.minimax('X').should == 0
+        end
+      end
+      
+      describe "player O" do
+        it "should return min score of all possible moves at one level before complete position" do
+          board = Board.new(3,[
+            ['O','O','X'],
+            ['.','X','X'],
+            ['O','X','O']
+            ])
+          board.minimax('O').should == -1
+        end
+
+        it "should return min score of all possible moves at any level" do
+          board = Board.new(3,[
+            ['O','O','X'],
+            ['X','X','.'],
+            ['O','X','.']
+            ])
+          board.minimax('O').should == 0
+        end
+      end
+    end 
   end
 end

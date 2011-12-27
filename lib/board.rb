@@ -3,15 +3,22 @@ class Board
   X = 'X'
   O = 'O'
   
-  def initialize(size=3, board=nil)
+  def initialize(size=3, board=nil, all_x=nil, all_o=nil)
     @size = size
     @board = board || empty_board
-    @all_x = Array.new(@size).fill(X)
-    @all_o = Array.new(@size).fill(O)
+    @all_x = all_x || Array.new(@size).fill(X)
+    @all_o = all_o || Array.new(@size).fill(O)
   end
   
-  def mark(x,y,player)
-    @board[x][y] = player.name
+  def mark(x,y,player_name)
+    cloned_cells = @board.map{|row| row.clone}
+    cloned_board = Board.new(@size, cloned_cells, @all_x, @all_o)
+    cloned_board.mark!(x,y,player_name)
+    cloned_board
+  end
+  
+  def mark!(x,y,player_name)
+    @board[x][y] = player_name
   end
   
   def get(x,y)
@@ -31,15 +38,30 @@ class Board
   
   def game_status
     all_rows = rows
-    won_by_x = all_rows.any?{|row| row == @all_x}
-    won_by_o = all_rows.any?{|row| row == @all_o}
+    won_by_x = all_rows.include?(@all_x)
+    won_by_o = all_rows.include?(@all_o)
     [
       (won_by_x || won_by_o || !has_empty_position?), 
       (won_by_x ? X : (won_by_o ? O : nil))
     ]
   end
+
+  def minimax(player_name)
+    game_over, winner = game_status
+    if game_over
+      return 1 if winner == X
+      return -1 if winner == O
+      return 0
+    else
+      if(player_name == X)
+        possible_moves.map {|move| self.mark(*move, player_name).minimax(O)}.max
+      else
+        possible_moves.map {|move| self.mark(*move, player_name).minimax(X)}.min
+      end
+    end
+  end
   
-  def empty_positions
+  def possible_moves
     positions = []
     @size.times do |i|
       @size.times do |j|

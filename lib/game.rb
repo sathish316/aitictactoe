@@ -6,9 +6,9 @@ require 'ai_player'
 class Game
   attr_reader :board, :players
 
-  def initialize(player_one_klass, player_two_klass)
+  def initialize(player_one_klass=RandomPlayer, player_two_klass=RandomPlayer)
     @board = Board.new
-    @players = [player_one_klass.new("X", @board), player_two_klass.new("O", @board)]
+    @players = [player_one_klass.new("X",@board), player_two_klass.new("O",@board)]
   end
   
   def start
@@ -25,6 +25,6 @@ class Game
   def draw
     system('clear')
     puts @board.draw
-    sleep(1)
+    sleep(0.5)
   end
 end

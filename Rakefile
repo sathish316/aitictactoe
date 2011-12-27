@@ -11,9 +11,15 @@ task "game:start_random" do
   game.start
 end
 
-desc "Start Tic Tac Toe game with AI and Random player"
-task "game:start_ai_random" do
+desc "Start Tic Tac Toe game AI vs Random player"
+task "game:start_ai_vs_random" do
   game = Game.new(AIPlayer, RandomPlayer)
+  game.start
+end
+
+desc "Start Tic Tac Toe game Random vs AI player"
+task "game:start_random_vs_ai" do
+  game = Game.new(RandomPlayer, AIPlayer)
   game.start
 end
 

@@ -10,10 +10,10 @@ describe Game do
     end
 
     it "should start game with customized player types" do
-      game = Game.new(:random, :ai)
+      game = Game.new(AIPlayer, RandomPlayer)
       game.board.should_not be_nil
-      game.players[0].class.should == Player
-      game.players[1].class.should == AIPlayer
+      game.players[0].class.should == AIPlayer
+      game.players[1].class.should == RandomPlayer
     end
   end
 end
