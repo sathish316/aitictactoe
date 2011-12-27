@@ -41,8 +41,9 @@ BOARD
         "OXX",
         "XOO"
         ])
-      board.should be_game_over
-      board.winner.should be_nil
+      game_over, winner = board.game_status
+      game_over.should be_true
+      winner.should be_nil
     end
     
     it "should be true if player marks 3 columns horizontally" do
@@ -51,8 +52,9 @@ BOARD
         "XXX",
         "..."
         ])
-      board.should be_game_over
-      board.winner.should == 'X'
+      game_over, winner = board.game_status
+      game_over.should be_true
+      winner.should == 'X'
     end
 
     it "should be true if player marks 3 columns vertically" do
@@ -61,8 +63,9 @@ BOARD
         "..X",
         "..X"
         ])
-      board.should be_game_over
-      board.winner.should == 'X'
+      game_over, winner = board.game_status
+      game_over.should be_true
+      winner.should == 'X'
     end
 
     it "should be true if player marks 3 columns diagonally" do
@@ -71,8 +74,9 @@ BOARD
         ".O.",
         "O.."
         ])
-      board.should be_game_over
-      board.winner.should == 'O'
+      game_over, winner = board.game_status
+      game_over.should be_true
+      winner.should == 'O'
     end
 
     it "should be false if there are positions to play and no 3 consecutive marks are present" do
@@ -81,8 +85,9 @@ BOARD
         ".X.",
         "X.."
         ])
-      board.should_not be_game_over
-      board.winner.should be_nil
+      game_over, winner = board.game_status
+      game_over.should be_false
+      winner.should be_nil
     end
   end
 end

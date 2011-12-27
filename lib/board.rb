@@ -1,5 +1,9 @@
 class Board
   EMPTY = '.'
+  X = 'X'
+  O = 'O'
+  ALL_X = [X,X,X]
+  ALL_O = [O,O,O]
   
   def initialize(board=["...","...","..."])
     @board = board.map {|row| row.chars.to_a}
@@ -24,19 +28,14 @@ class Board
     output
   end
   
-  def game_over?
-    all_x = ['X','X','X']
-    all_o = ['O','O','O']
+  def game_status
     all_rows = rows
-    all_rows.any?{|row| row == all_x} || all_rows.any?{|row| row == all_o} || !has_empty_position?
-  end
-  
-  def winner
-    all_rows = rows
-    all_x = ['X','X','X']
-    all_o = ['O','O','O']
-    return 'X' if all_rows.any?{|row| row == all_x}
-    return 'O' if all_rows.any?{|row| row == all_o}
+    won_by_x = all_rows.any?{|row| row == ALL_X}
+    won_by_o = all_rows.any?{|row| row == ALL_O}
+    [
+      (won_by_x || won_by_o || !has_empty_position?), 
+      (won_by_x ? X : (won_by_o ? O : nil))
+    ]
   end
   
   private
