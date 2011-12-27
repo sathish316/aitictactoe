@@ -1,10 +1,10 @@
-#### AI Tic Tac Toe Player
+## AI Tic Tac Toe Player
 
 AI Tic Tac Toe player using Minimax algorithm based on:
 
 [http://www.ocf.berkeley.edu/~yosenl/extras/alphabeta/alphabeta.html](http://www.ocf.berkeley.edu/~yosenl/extras/alphabeta/alphabeta.html)
 
-###### How to Execute?
+#### How to Execute?
 
 To execute game:
 
