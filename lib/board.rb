@@ -2,11 +2,12 @@ class Board
   EMPTY = '.'
   X = 'X'
   O = 'O'
-  ALL_X = [X,X,X]
-  ALL_O = [O,O,O]
   
-  def initialize(board=["...","...","..."])
-    @board = board.map {|row| row.chars.to_a}
+  def initialize(size=3, board=nil)
+    @size = size
+    @board = board || empty_board
+    @all_x = Array.new(@size).fill(X)
+    @all_o = Array.new(@size).fill(O)
   end
   
   def mark(x,y,player)
@@ -19,8 +20,8 @@ class Board
   
   def draw
     output = ""
-    3.times do |i|
-      3.times do |j|
+    @size.times do |i|
+      @size.times do |j|
         output << @board[i][j]
       end
       output << "\n"
@@ -30,8 +31,8 @@ class Board
   
   def game_status
     all_rows = rows
-    won_by_x = all_rows.any?{|row| row == ALL_X}
-    won_by_o = all_rows.any?{|row| row == ALL_O}
+    won_by_x = all_rows.any?{|row| row == @all_x}
+    won_by_o = all_rows.any?{|row| row == @all_o}
     [
       (won_by_x || won_by_o || !has_empty_position?), 
       (won_by_x ? X : (won_by_o ? O : nil))
@@ -40,8 +41,8 @@ class Board
   
   def empty_positions
     positions = []
-    3.times do |i|
-      3.times do |j|
+    @size.times do |i|
+      @size.times do |j|
         positions << [i,j] if @board[i][j] == EMPTY
       end
     end
@@ -49,6 +50,12 @@ class Board
   end
   
   private
+  
+  def empty_board
+    board = []
+    @size.times { board << Array.new(@size).fill(EMPTY) }
+    board
+  end
   
   def has_empty_position?
     @board.flatten.include?(EMPTY)
@@ -67,9 +74,8 @@ class Board
   end
   
   def diagonals
-    [
-      [@board[0][0], @board[1][1], @board[2][2]],
-      [@board[0][2], @board[1][1], @board[2][0]],
-    ]
+    main_diagonal = (0...@size).map {|i| @board[i][i]}
+    alternate_diagonal = (0...@size).map {|i| @board[i][@size-1-i]}
+    [main_diagonal, alternate_diagonal]
   end
 end

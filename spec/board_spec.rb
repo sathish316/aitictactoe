@@ -1,6 +1,20 @@
 require 'spec_helper'
 
 describe Board do
+  
+  describe "initialize" do
+    it "can be of any dimension" do
+      board_output = <<-BOARD
+....
+....
+....
+....
+BOARD
+      board = Board.new(4)
+      board.draw.should == board_output
+    end
+  end
+  
   describe "draw" do
     it "should draw initial board position" do
       board_output = <<-BOARD
@@ -36,54 +50,66 @@ BOARD
 
   describe "game over?" do
     it "should be true if there are no more positions to play" do
-      board = Board.new([
-        "XXO",
-        "OXX",
-        "XOO"
+      board = Board.new(3,[
+        ['X','X','O'],
+        ['O','X','X'],
+        ['X','O','O']
         ])
       game_over, winner = board.game_status
       game_over.should be_true
       winner.should be_nil
     end
     
-    it "should be true if player marks 3 columns horizontally" do
-      board = Board.new([
-        "...",
-        "XXX",
-        "..."
+    it "should be true if player marks 3 consecutive positions horizontally" do
+      board = Board.new(3,[
+        ['.','.','.'],
+        ['X','X','X'],
+        ['.','.','.']
         ])
       game_over, winner = board.game_status
       game_over.should be_true
       winner.should == 'X'
     end
 
-    it "should be true if player marks 3 columns vertically" do
-      board = Board.new([
-        "..X",
-        "..X",
-        "..X"
+    it "should be true if player marks 3 consecutive positions vertically" do
+      board = Board.new(3,[
+        ['.','.','X'],
+        ['.','.','X'],
+        ['.','.','X']
         ])
       game_over, winner = board.game_status
       game_over.should be_true
       winner.should == 'X'
     end
 
-    it "should be true if player marks 3 columns diagonally" do
-      board = Board.new([
-        "..O",
-        ".O.",
-        "O.."
+    it "should be true if player marks 3 consecutive positions diagonally" do
+      board = Board.new(3,[
+        ['.','.','O'],
+        ['.','O','.'],
+        ['O','.','.']
         ])
       game_over, winner = board.game_status
       game_over.should be_true
       winner.should == 'O'
     end
 
+    it "should be true if player marks 4 consecutive positions diagonally" do
+      board = Board.new(4,[
+        ['.','.','.','X'],
+        ['.','.','X','.'],
+        ['.','X','.','.'],
+        ['X','.','.','.']
+        ])
+      game_over, winner = board.game_status
+      game_over.should be_true
+      winner.should == 'X'
+    end
+
     it "should be false if there are positions to play and no 3 consecutive marks are present" do
-      board = Board.new([
-        "...",
-        ".X.",
-        "X.."
+      board = Board.new(3,[
+        ['.','.','.'],
+        ['.','X','.'],
+        ['X','.','.']
         ])
       game_over, winner = board.game_status
       game_over.should be_false
